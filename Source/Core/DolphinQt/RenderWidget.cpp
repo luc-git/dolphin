@@ -262,7 +262,11 @@ void RenderWidget::SetCursorLocked(bool locked, bool follow_aspect_ratio)
 
     if (ClipCursor(&rect))
 #else
-    // TODO: implement on other platforms. Probably XGrabPointer on Linux.
+    // TODO: implement on other platforms. 
+    // On linux X11 you need to use XFixesCreatePointerBarrier and XFixesDestroyPointerBarrier.
+    // More infos here: https://www.x.org/releases/X11R7.7/doc/fixesproto/fixesproto.txt
+    // On linux wayland you need to use zwp_pointer_constraints_v1::confine_pointer and zwp_pointer_constraints_v1::destroy.
+    // More infos here: https://wayland.app/protocols/pointer-constraints-unstable-v1
     // The setting is hidden in the UI if not implemented
     if (false)
 #endif
