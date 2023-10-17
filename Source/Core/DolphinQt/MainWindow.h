@@ -113,6 +113,7 @@ private:
   void IncrementSelectedStateSlot();
   void DecrementSelectedStateSlot();
   void BootWiiSystemMenu();
+  void SingleWindowModeToggled(bool is_single);
 
   void PerformOnlineUpdate(const std::string& region);
 

@@ -516,6 +516,11 @@ void MenuBar::AddViewMenu()
 #else
   view_menu->addAction(tr("Search"), this, &MenuBar::ShowSearch, QKeySequence::Find);
 #endif
+  m_single_window = view_menu->addAction(tr("Single window mode"));
+  m_single_window->setCheckable(true);
+  connect(m_single_window, &QAction::toggled, this,
+          [this](bool checked) { SingleWindowMode(checked);
+    });
 }
 
 void MenuBar::AddOptionsMenu()

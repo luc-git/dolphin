@@ -584,6 +584,7 @@ void MainWindow::ConnectMenuBar()
   connect(m_game_list, &GameList::SelectionChanged, m_menu_bar, &MenuBar::SelectionChanged);
   connect(this, &MainWindow::ReadOnlyModeChanged, m_menu_bar, &MenuBar::ReadOnlyModeChanged);
   connect(this, &MainWindow::RecordingStatusChanged, m_menu_bar, &MenuBar::RecordingStatusChanged);
+  connect(m_menu_bar, &MenuBar::SingleWindowMode, this, &MainWindow::SingleWindowModeToggled);
 
   // Symbols
   connect(m_menu_bar, &MenuBar::NotifySymbolsUpdated, [this] {
@@ -722,6 +723,7 @@ void MainWindow::ConnectStack()
 
   layout->addWidget(m_game_list);
   layout->addWidget(m_search_bar);
+  //layout->addWidget(m_render_widget);
   layout->setContentsMargins(0, 0, 0, 0);
 
   connect(m_search_bar, &SearchBar::Search, m_game_list, &GameList::SetSearchTerm);
@@ -1471,6 +1473,23 @@ void MainWindow::PerformOnlineUpdate(const std::string& region)
 void MainWindow::BootWiiSystemMenu()
 {
   StartGame(std::make_unique<BootParameters>(BootParameters::NANDTitle{Titles::SYSTEM_MENU}));
+}
+
+void MainWindow::SingleWindowModeToggled(bool is_single)
+{
+  const auto m_stack_layout = m_stack->widget(0)->layout();
+  if (is_single)
+  {
+    m_stack_layout->addWidget(m_render_widget);
+    m_render_widget->setGeometry(m_game_list->geometry());
+  }
+  else
+  {
+    m_stack_layout->removeWidget(m_render_widget);
+    m_render_widget->setParent(nullptr);
+    m_render_widget->setVisible(Core::IsRunning());
+  }
+  m_game_list->setHidden(is_single && Core::IsRunning());
 }
 
 void MainWindow::NetPlayInit()

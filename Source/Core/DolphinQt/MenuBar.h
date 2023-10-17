@@ -113,6 +113,7 @@ signals:
   void ColumnVisibilityToggled(const QString& row, bool visible);
   void GameListPlatformVisibilityToggled(const QString& row, bool visible);
   void GameListRegionVisibilityToggled(const QString& row, bool visible);
+  void SingleWindowMode(bool is_single);
 
   // Movie
   void PlayRecording();
@@ -253,6 +254,7 @@ private:
   QAction* m_show_memory;
   QAction* m_show_network;
   QAction* m_show_jit;
+  QAction* m_single_window;
   QMenu* m_cols_menu;
 
   // JIT
