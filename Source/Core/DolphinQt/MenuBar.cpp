@@ -518,9 +518,10 @@ void MenuBar::AddViewMenu()
 #endif
   m_single_window = view_menu->addAction(tr("Single window mode"));
   m_single_window->setCheckable(true);
-  connect(m_single_window, &QAction::toggled, this,
-          [this](bool checked) { SingleWindowMode(checked);
-    });
+  m_single_window->setChecked(Settings::Instance().IsSingleWindow());
+  connect(m_single_window, &QAction::toggled, &Settings::Instance(), &Settings::SetSingleWindow);
+  connect(&Settings::Instance(), &Settings::SingleWindowModeChanged, m_single_window,
+          &QAction::setChecked);
 }
 
 void MenuBar::AddOptionsMenu()

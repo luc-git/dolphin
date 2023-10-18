@@ -584,7 +584,8 @@ void MainWindow::ConnectMenuBar()
   connect(m_game_list, &GameList::SelectionChanged, m_menu_bar, &MenuBar::SelectionChanged);
   connect(this, &MainWindow::ReadOnlyModeChanged, m_menu_bar, &MenuBar::ReadOnlyModeChanged);
   connect(this, &MainWindow::RecordingStatusChanged, m_menu_bar, &MenuBar::RecordingStatusChanged);
-  connect(m_menu_bar, &MenuBar::SingleWindowMode, this, &MainWindow::SingleWindowModeToggled);
+  connect(&Settings::Instance(), &Settings::SingleWindowModeChanged, this,
+          &MainWindow::SetSingleWindowMode);
 
   // Symbols
   connect(m_menu_bar, &MenuBar::NotifySymbolsUpdated, [this] {
@@ -991,6 +992,7 @@ bool MainWindow::RequestStop()
 void MainWindow::ForceStop()
 {
   Core::Stop();
+  m_game_list->show();
 }
 
 void MainWindow::Reset()
@@ -1123,6 +1125,7 @@ void MainWindow::StartGame(std::unique_ptr<BootParameters>&& parameters)
 
   if (Config::Get(Config::MAIN_FULLSCREEN))
     m_fullscreen_requested = true;
+  SetSingleWindowMode(Settings::Instance().IsSingleWindow());
 }
 
 void MainWindow::SetFullScreenResolution(bool fullscreen)
@@ -1475,7 +1478,7 @@ void MainWindow::BootWiiSystemMenu()
   StartGame(std::make_unique<BootParameters>(BootParameters::NANDTitle{Titles::SYSTEM_MENU}));
 }
 
-void MainWindow::SingleWindowModeToggled(bool is_single)
+void MainWindow::SetSingleWindowMode(bool is_single)
 {
   const auto m_stack_layout = m_stack->widget(0)->layout();
   if (is_single)

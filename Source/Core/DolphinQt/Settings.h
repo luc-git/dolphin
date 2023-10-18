@@ -71,6 +71,8 @@ public:
   void SetLogVisible(bool visible);
   bool IsLogConfigVisible() const;
   void SetLogConfigVisible(bool visible);
+  bool IsSingleWindow() const;
+  void SetSingleWindow(bool is_single);
   void SetToolBarVisible(bool visible);
   bool IsToolBarVisible() const;
   void SetWidgetsLocked(bool visible);
@@ -189,6 +191,7 @@ signals:
   void ThreadsVisibilityChanged(bool visible);
   void LogVisibilityChanged(bool visible);
   void LogConfigVisibilityChanged(bool visible);
+  void SingleWindowModeChanged(bool is_single);
   void ToolBarVisibilityChanged(bool visible);
   void WidgetLockChanged(bool locked);
   void EnableCheatsChanged(bool enabled);

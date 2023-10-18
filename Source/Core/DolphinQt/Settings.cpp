@@ -503,6 +503,20 @@ void Settings::SetLogConfigVisible(bool visible)
   }
 }
 
+bool Settings::IsSingleWindow() const
+{
+  return GetQSettings().value(QStringLiteral("renderwidget/singlewindowmode")).toBool();
+}
+
+void Settings::SetSingleWindow(bool is_single)
+{
+  if (IsSingleWindow() != is_single)
+  {
+    GetQSettings().setValue(QStringLiteral("renderwidget/singlewindowmode"), is_single);
+    emit SingleWindowModeChanged(is_single);
+  }
+}
+
 std::shared_ptr<NetPlay::NetPlayClient> Settings::GetNetPlayClient()
 {
   return m_client;

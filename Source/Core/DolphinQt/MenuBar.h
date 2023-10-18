@@ -113,7 +113,6 @@ signals:
   void ColumnVisibilityToggled(const QString& row, bool visible);
   void GameListPlatformVisibilityToggled(const QString& row, bool visible);
   void GameListRegionVisibilityToggled(const QString& row, bool visible);
-  void SingleWindowMode(bool is_single);
 
   // Movie
   void PlayRecording();
