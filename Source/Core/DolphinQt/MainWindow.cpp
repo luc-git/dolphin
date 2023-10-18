@@ -993,6 +993,7 @@ void MainWindow::ForceStop()
 {
   Core::Stop();
   m_game_list->show();
+  setWindowTitle(QString::fromStdString(Common::GetScmRevStr()));
 }
 
 void MainWindow::Reset()
@@ -1480,19 +1481,25 @@ void MainWindow::BootWiiSystemMenu()
 
 void MainWindow::SetSingleWindowMode(bool is_single)
 {
+  if (!Core::IsRunning())
+  {
+    return;
+  }
   const auto m_stack_layout = m_stack->widget(0)->layout();
   if (is_single)
   {
     m_stack_layout->addWidget(m_render_widget);
     m_render_widget->setGeometry(m_game_list->geometry());
+    setWindowTitle(m_render_widget->windowTitle());
   }
   else
   {
     m_stack_layout->removeWidget(m_render_widget);
     m_render_widget->setParent(nullptr);
     m_render_widget->setVisible(Core::IsRunning());
+    setWindowTitle(QString::fromStdString(Common::GetScmRevStr()));
   }
-  m_game_list->setHidden(is_single && Core::IsRunning());
+  m_game_list->setHidden(is_single);
 }
 
 void MainWindow::NetPlayInit()
